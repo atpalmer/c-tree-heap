@@ -27,6 +27,27 @@ void tree_free(struct node *this) {
     free(this);
 }
 
+void tree_heapify(struct node *this) {
+    if(this->left) {
+        tree_heapify(this->left);
+        if(this->left->value < this->value) {
+            int tmp = this->left->value;
+            this->left->value = this->value;
+            this->value = tmp;
+            tree_heapify(this->left);
+        }
+    }
+    if(this->right) {
+        tree_heapify(this->right);
+        if(this->right->value < this->value) {
+            int tmp = this->right->value;
+            this->right->value = this->value;
+            this->value = tmp;
+            tree_heapify(this->right);
+        }
+    }
+}
+
 void _tree_print(struct node *this) {
     if(!this) {
         printf("-");
@@ -46,6 +67,8 @@ void tree_print(struct node *this) {
 
 int main(void) {
     struct node *tree = tree_new();
+    tree_print(tree);
+    tree_heapify(tree);
     tree_print(tree);
     tree_free(tree);
 }
