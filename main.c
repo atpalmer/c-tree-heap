@@ -27,25 +27,24 @@ void tree_free(struct node *this) {
     free(this);
 }
 
+void tree_heapify(struct node *this);
+
+void _branch_heapify(struct node *this, struct node *branch) {
+    if(!branch)
+        return;
+
+    tree_heapify(branch);
+    if(branch->value < this->value) {
+        int tmp = branch->value;
+        branch->value = this->value;
+        this->value = tmp;
+        tree_heapify(branch);
+    }
+}
+
 void tree_heapify(struct node *this) {
-    if(this->left) {
-        tree_heapify(this->left);
-        if(this->left->value < this->value) {
-            int tmp = this->left->value;
-            this->left->value = this->value;
-            this->value = tmp;
-            tree_heapify(this->left);
-        }
-    }
-    if(this->right) {
-        tree_heapify(this->right);
-        if(this->right->value < this->value) {
-            int tmp = this->right->value;
-            this->right->value = this->value;
-            this->value = tmp;
-            tree_heapify(this->right);
-        }
-    }
+    _branch_heapify(this, this->left);
+    _branch_heapify(this, this->right);
 }
 
 void _tree_print(struct node *this) {
